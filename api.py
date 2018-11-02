@@ -24,12 +24,12 @@ def get_url(song_mid):
     # print(url)
 
     # get vkey
-    _res = requests.get(url).text[32:-1]
+    _res = requests.get(url).text[len(callback)+1:-1]
     try:
         res = json.loads(_res, strict=False)
         vkey = res['req_0']['data']['midurlinfo'][0]['vkey']
     except json.decoder.JSONDecodeError:
-        print(res)
+        print(_res)
         return
 
     # makup the final url
