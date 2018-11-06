@@ -1,11 +1,23 @@
 [[source]]
+
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+
 [packages]
+
+requests = "*"
+python-vlc = "*"
+"pyqt5" = "*"
+"js2py" = "*"
+pycrypto = "*"
+
 
 [dev-packages]
 
+
+
 [requires]
+
 python_version = "3.6"
