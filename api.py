@@ -4,6 +4,7 @@ import base64
 from urllib.parse import urlencode, quote
 import requests
 from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
 from obj import Song, Singer, Album, Singers
 
 
@@ -98,17 +99,18 @@ class Wy(object):
 
     @staticmethod
     def aes(a, b):
-        iv = "0102030405060708"
-        pad = 16 - len(a) % 16
-        text = a + pad * chr(pad)
+        iv = b"0102030405060708"
+        # pad = 16 - len(a) % 16
+        # text = a + pad * chr(pad).encode()
+        text = pad(a.encode(), 16)
         encryptor = AES.new(b, AES.MODE_CBC, iv)
         text = encryptor.encrypt(text)
         return base64.b64encode(text).decode()
 
     def get_params(self, d):
-        g = "0CoJUm6Qyw8W8jud"
+        g = b"0CoJUm6Qyw8W8jud"
         h = {}
-        i = "FFFFFFFFFFFFFFFF"
+        i = b"FFFFFFFFFFFFFFFF"
         h["encSecKey"] = "257348aecb5e556c066de214e531faadd1c55d814f9be95fd06d6bff9f4c7a41f831f6394d5a3fd2e3881736d94a02ca919d952872e7d0a50ebfa1769a7a62d512f5f1ca21aec60bc3819a9c3ffca5eca9a0dba6d6f7249b06f5965ecfff3695b54e1c28f3f624750ed39e7de08fc8493242e26dbc4484a01c76f739e135637c"
         _params = self.aes(d, g)
         h["params"] = self.aes(_params, i)
